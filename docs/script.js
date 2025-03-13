@@ -10,6 +10,9 @@ function convertImage() {
         return;
     }
 
+    // Inicializa o botão de download como oculto
+    downloadLink.classList.add('d-none');
+    
     const file = fileInput.files[0];
     const reader = new FileReader();
 
@@ -21,43 +24,43 @@ function convertImage() {
             canvas.height = img.height;
             ctx.drawImage(img, 0, 0);
 
-            // Aqui, vamos adicionar o código para controlar o progresso
-            let progress = 0;
-            const interval = setInterval(() => {
-                progress += 10; // Simula o progresso (aumente conforme necessário)
-                progressBar.value = progress;
-
-                // Quando o progresso atingir 100%, mostra o botão de download
-                if (progress >= 100) {
-                    clearInterval(interval); // Interrompe o intervalo
-                    downloadLink.classList.remove('d-none'); // Mostra o botão de download
-                }
-            }, 500); // Atualiza a cada 500ms (ajuste conforme a necessidade)
-
-            // Agora, converta para o formato desejado
+            // Começar o processo de conversão e atualização do progresso
             const selectedFormat = formatSelect.value;
             let dataUrl;
 
-            if (selectedFormat === 'png') {
-                dataUrl = canvas.toDataURL('image/png');
-            } else if (selectedFormat === 'jpeg') {
-                dataUrl = canvas.toDataURL('image/jpeg');
-            } else if (selectedFormat === 'bmp') {
-                dataUrl = canvas.toDataURL('image/bmp');
-            } else if (selectedFormat === 'gif') {
-                dataUrl = canvas.toDataURL('image/gif');
-            } else if (selectedFormat === 'webp') {
-                dataUrl = canvas.toDataURL('image/webp');
-            } else if (selectedFormat === 'avif') {
-                dataUrl = canvas.toDataURL('image/avif');
-            } else if (selectedFormat === 'heif') {
-                dataUrl = canvas.toDataURL('image/heif');
-            }
-            // Adicionar mais condições para outros formatos, como SVG, ICO, HEIC, PDF, EPS, etc.
+            // Simula o progresso da conversão
+            let progress = 0;
+            const interval = setInterval(() => {
+                progress += 10; // Aumenta o progresso a cada intervalo
+                progressBar.value = progress; // Atualiza a barra de progresso
 
-            // Atualizar o link para download
-            downloadLink.href = dataUrl;
-            downloadLink.download = `imagem-convertida.${selectedFormat}`;
+                // Quando o progresso atingir 100%, mostra o botão de download
+                if (progress >= 100) {
+                    clearInterval(interval); // Limpa o intervalo quando chegar a 100%
+                    // Aqui você define a conversão para o formato desejado
+                    if (selectedFormat === 'png') {
+                        dataUrl = canvas.toDataURL('image/png');
+                    } else if (selectedFormat === 'jpeg') {
+                        dataUrl = canvas.toDataURL('image/jpeg');
+                    } else if (selectedFormat === 'bmp') {
+                        dataUrl = canvas.toDataURL('image/bmp');
+                    } else if (selectedFormat === 'gif') {
+                        dataUrl = canvas.toDataURL('image/gif');
+                    } else if (selectedFormat === 'webp') {
+                        dataUrl = canvas.toDataURL('image/webp');
+                    } else if (selectedFormat === 'avif') {
+                        dataUrl = canvas.toDataURL('image/avif');
+                    } else if (selectedFormat === 'heif') {
+                        dataUrl = canvas.toDataURL('image/heif');
+                    }
+                    // Adicionar mais condições para outros formatos, como SVG, ICO, HEIC, PDF, EPS, etc.
+                    
+                    // Atualiza o link para download
+                    downloadLink.href = dataUrl;
+                    downloadLink.download = `imagem-convertida.${selectedFormat}`;
+                    downloadLink.classList.remove('d-none'); // Mostra o botão de download
+                }
+            }, 500); // Intervalo de 500ms (ajustável para simular o progresso)
         };
 
         img.src = event.target.result;
