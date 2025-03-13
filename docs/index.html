@@ -6,10 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Conversor de Imagens</title>
 
-    <!-- Link para o Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet">
-
-    <!-- Link para o seu CSS -->
     <link rel="stylesheet" href="style.css">
 </head>
 
@@ -27,11 +24,9 @@
                 <select id="format" class="form-control">
                     <option value="png">PNG</option>
                     <option value="jpeg">JPEG</option>
-                    <option value="jpg">JPG</option>
                     <option value="bmp">BMP</option>
                     <option value="gif">GIF</option>
                     <option value="webp">WebP</option>
-                    <option value="tiff">TIFF</option>
                     <option value="svg">SVG</option>
                     <option value="ico">ICO</option>
                     <option value="heif">HEIF</option>
@@ -43,20 +38,23 @@
             </div>
 
             <button type="button" class="btn btn-primary w-100" onclick="convertImage()">Converter</button>
+
+            <div class="mb-3 mt-3">
+                <label for="progress" class="form-label">Progresso</label>
+                <progress id="progress" value="0" max="100" class="w-100"></progress>
+            </div>
         </form>
 
         <br>
-
         <canvas id="canvas" class="d-none"></canvas>
-
         <a id="download" class="btn btn-success mt-3 d-none" download>Baixar Imagem</a>
     </div>
 
-    <!-- Link para o Bootstrap JavaScript (para funcionalidades interativas) -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"></script>
-
-    <!-- Link para o seu JavaScript -->
     <script src="script.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/avif.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/heif.js"></script>
+
 </body>
 
 </html>
