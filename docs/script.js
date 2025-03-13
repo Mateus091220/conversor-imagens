@@ -13,9 +13,6 @@ function convertImage() {
     const file = fileInput.files[0];
     const reader = new FileReader();
 
-    // Esconde o botão de download enquanto a conversão não terminar
-    downloadLink.classList.add('d-none');
-    
     reader.onload = function (event) {
         const img = new Image();
         img.onload = function () {
@@ -24,10 +21,22 @@ function convertImage() {
             canvas.height = img.height;
             ctx.drawImage(img, 0, 0);
 
-            // Aqui você pode adicionar o código para converter o canvas para o formato desejado
+            // Aqui, vamos adicionar o código para controlar o progresso
+            let progress = 0;
+            const interval = setInterval(() => {
+                progress += 10; // Simula o progresso (aumente conforme necessário)
+                progressBar.value = progress;
+
+                // Quando o progresso atingir 100%, mostra o botão de download
+                if (progress >= 100) {
+                    clearInterval(interval); // Interrompe o intervalo
+                    downloadLink.classList.remove('d-none'); // Mostra o botão de download
+                }
+            }, 500); // Atualiza a cada 500ms (ajuste conforme a necessidade)
+
+            // Agora, converta para o formato desejado
             const selectedFormat = formatSelect.value;
             let dataUrl;
-            let progress = 0;
 
             if (selectedFormat === 'png') {
                 dataUrl = canvas.toDataURL('image/png');
@@ -44,19 +53,11 @@ function convertImage() {
             } else if (selectedFormat === 'heif') {
                 dataUrl = canvas.toDataURL('image/heif');
             }
+            // Adicionar mais condições para outros formatos, como SVG, ICO, HEIC, PDF, EPS, etc.
 
-            // Simulando a atualização do progresso (isso pode ser ajustado conforme a necessidade)
-            let interval = setInterval(function() {
-                if (progress < 100) {
-                    progress += 10; // Avançando o progresso
-                    progressBar.value = progress;
-                } else {
-                    clearInterval(interval); // Quando o progresso atingir 100%, para
-                    downloadLink.href = dataUrl;
-                    downloadLink.download = `imagem-convertida.${selectedFormat}`;
-                    downloadLink.classList.remove('d-none'); // Mostra o botão de download
-                }
-            }, 100); // Atualiza o progresso a cada 100ms
+            // Atualizar o link para download
+            downloadLink.href = dataUrl;
+            downloadLink.download = `imagem-convertida.${selectedFormat}`;
         };
 
         img.src = event.target.result;
