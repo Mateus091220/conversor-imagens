@@ -12,18 +12,14 @@ function convertImage() {
 
     const file = fileInput.files[0];
     const reader = new FileReader();
-
-    // Função para simular o progresso
-    let progressInterval;
-    let progressValue = 0;
-
-    function updateProgress() {
-        progressValue += 1;
-        progressBar.value = progressValue;
-        if (progressValue >= 100) {
-            clearInterval(progressInterval);
+    
+    // Simulando a barra de progresso (não é 100% precisa, mas serve para exibir o progresso)
+    reader.onprogress = function (event) {
+        if (event.lengthComputable) {
+            let percent = (event.loaded / event.total) * 100;
+            progressBar.value = percent;
         }
-    }
+    };
 
     reader.onload = function (event) {
         const img = new Image();
@@ -36,9 +32,6 @@ function convertImage() {
             // Aqui você pode adicionar o código para converter o canvas para o formato desejado
             const selectedFormat = formatSelect.value;
             let dataUrl;
-
-            // Iniciar a simulação do progresso
-            progressInterval = setInterval(updateProgress, 100); // Atualiza a cada 100ms
 
             if (selectedFormat === 'png') {
                 dataUrl = canvas.toDataURL('image/png');
@@ -63,6 +56,9 @@ function convertImage() {
             downloadLink.href = dataUrl;
             downloadLink.download = `imagem-convertida.${selectedFormat}`;
             downloadLink.classList.remove('d-none');
+            
+            // Atualizar a barra de progresso para 100% após a conversão
+            progressBar.value = 100;
         };
 
         img.src = event.target.result;
