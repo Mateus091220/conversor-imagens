@@ -12,15 +12,10 @@ function convertImage() {
 
     const file = fileInput.files[0];
     const reader = new FileReader();
-    
-    // Simulando a barra de progresso (não é 100% precisa, mas serve para exibir o progresso)
-    reader.onprogress = function (event) {
-        if (event.lengthComputable) {
-            let percent = (event.loaded / event.total) * 100;
-            progressBar.value = percent;
-        }
-    };
 
+    // Esconde o botão de download enquanto a conversão não terminar
+    downloadLink.classList.add('d-none');
+    
     reader.onload = function (event) {
         const img = new Image();
         img.onload = function () {
@@ -32,6 +27,7 @@ function convertImage() {
             // Aqui você pode adicionar o código para converter o canvas para o formato desejado
             const selectedFormat = formatSelect.value;
             let dataUrl;
+            let progress = 0;
 
             if (selectedFormat === 'png') {
                 dataUrl = canvas.toDataURL('image/png');
@@ -44,21 +40,23 @@ function convertImage() {
             } else if (selectedFormat === 'webp') {
                 dataUrl = canvas.toDataURL('image/webp');
             } else if (selectedFormat === 'avif') {
-                // Lógica para conversão para AVIF
                 dataUrl = canvas.toDataURL('image/avif');
             } else if (selectedFormat === 'heif') {
-                // Lógica para conversão para HEIF
                 dataUrl = canvas.toDataURL('image/heif');
             }
-            // Adicionar mais condições para outros formatos, como SVG, ICO, HEIC, PDF, EPS, etc.
 
-            // Atualizar o link para download
-            downloadLink.href = dataUrl;
-            downloadLink.download = `imagem-convertida.${selectedFormat}`;
-            downloadLink.classList.remove('d-none');
-            
-            // Atualizar a barra de progresso para 100% após a conversão
-            progressBar.value = 100;
+            // Simulando a atualização do progresso (isso pode ser ajustado conforme a necessidade)
+            let interval = setInterval(function() {
+                if (progress < 100) {
+                    progress += 10; // Avançando o progresso
+                    progressBar.value = progress;
+                } else {
+                    clearInterval(interval); // Quando o progresso atingir 100%, para
+                    downloadLink.href = dataUrl;
+                    downloadLink.download = `imagem-convertida.${selectedFormat}`;
+                    downloadLink.classList.remove('d-none'); // Mostra o botão de download
+                }
+            }, 100); // Atualiza o progresso a cada 100ms
         };
 
         img.src = event.target.result;
