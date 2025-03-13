@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Conversor de Imagens</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h2>Conversor de Imagens</h2>
+        <input type="file" id="upload" accept="image/*">
+        
+        <label for="format">Converter para:</label>
+        <select id="format">
+            <option value="png">PNG</option>
+            <option value="jpeg">JPG</option>
+            <option value="bmp">BMP</option>
+            <option value="gif">GIF</option>
+        </select>
+
+        <button onclick="convertImage()">Converter</button>
+        <br>
+        <canvas id="canvas"></canvas>
+        <a id="download" class="hidden">Baixar Imagem</a>
