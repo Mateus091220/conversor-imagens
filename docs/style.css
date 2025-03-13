@@ -5,7 +5,7 @@ body {
 }
 
 .container {
-    margin: 50px auto;
+    margin: 20px auto; /* Diminui a margem superior para reduzir o espaço entre o topo da página e o conteúdo */
     width: 320px;
     padding: 20px;
     background: white;
@@ -47,4 +47,20 @@ button:hover {
 
 .hidden {
     display: none;
+}
+
+/* Reduzindo o espaçamento entre o título e o formulário */
+h2 {
+    margin-bottom: 20px; /* Ajusta a margem inferior para um valor menor */
+}
+
+/* Ajusta o espaçamento entre as seções */
+.card {
+    margin-bottom: 15px; /* Diminui o espaço entre os cards */
+}
+
+/* Ajustando o espaçamento do cabeçalho */
+header img {
+    max-width: 200px;
+    margin-bottom: 20px; /* Ajusta o espaçamento abaixo do logo */
 }
