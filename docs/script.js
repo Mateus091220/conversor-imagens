@@ -13,6 +13,14 @@ function convertImage() {
     const file = fileInput.files[0];
     const reader = new FileReader();
 
+    // Atualiza a barra de progresso durante a leitura do arquivo
+    reader.onprogress = function (event) {
+        if (event.lengthComputable) {
+            const percent = (event.loaded / event.total) * 100;
+            progressBar.value = percent;
+        }
+    };
+
     reader.onload = function (event) {
         const img = new Image();
         img.onload = function () {
@@ -43,6 +51,9 @@ function convertImage() {
                 dataUrl = canvas.toDataURL('image/heif');
             }
             // Adicionar mais condições para outros formatos, como SVG, ICO, HEIC, PDF, EPS, etc.
+
+            // Após a conversão, o valor da barra de progresso é definido para 100%
+            progressBar.value = 100;
 
             // Atualizar o link para download
             downloadLink.href = dataUrl;
