@@ -24,20 +24,23 @@ function convertImage() {
             canvas.height = img.height;
             ctx.drawImage(img, 0, 0);
 
-            // Começar o processo de conversão e atualização do progresso
+            // Começar o processo de conversão
             const selectedFormat = formatSelect.value;
             let dataUrl;
 
             // Simula o progresso da conversão
             let progress = 0;
+            progressBar.value = progress;
+
             const interval = setInterval(() => {
                 progress += 10; // Aumenta o progresso a cada intervalo
                 progressBar.value = progress; // Atualiza a barra de progresso
 
-                // Quando o progresso atingir 100%, mostra o botão de download
+                // Quando o progresso atingir 100%, faz a conversão e mostra o botão de download
                 if (progress >= 100) {
                     clearInterval(interval); // Limpa o intervalo quando chegar a 100%
-                    // Aqui você define a conversão para o formato desejado
+                    
+                    // Realiza a conversão para o formato desejado
                     if (selectedFormat === 'png') {
                         dataUrl = canvas.toDataURL('image/png');
                     } else if (selectedFormat === 'jpeg') {
