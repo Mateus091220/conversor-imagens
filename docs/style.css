@@ -5,8 +5,9 @@ body {
 }
 
 .container {
-    margin: 20px auto; /* Diminui a margem superior para reduzir o espaço entre o topo da página e o conteúdo */
-    width: 320px;
+    margin: 20px auto; /* Diminui a margem superior */
+    max-width: 800px; /* Aumenta a largura do container */
+    width: 100%;
     padding: 20px;
     background: white;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);

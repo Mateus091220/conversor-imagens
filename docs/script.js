@@ -1,18 +1,36 @@
+let selectedFormat = ''; // Variável global para armazenar o formato escolhido
+
+function setFormat(event, format) {
+    selectedFormat = format; // Define o formato selecionado
+
+    // Remove a classe 'active' de todos os botões
+    document.querySelectorAll('.btn-outline-primary').forEach(button => {
+        button.classList.remove('active');
+    });
+
+    // Adiciona a classe 'active' ao botão clicado
+    event.target.classList.add('active');
+}
+
 function convertImage() {
     const fileInput = document.getElementById('upload');
-    const formatSelect = document.getElementById('format');
     const progressBar = document.getElementById('progress');
     const canvas = document.getElementById('canvas');
     const downloadLink = document.getElementById('download');
-    
+
     if (!fileInput.files.length) {
         alert("Por favor, escolha uma imagem!");
         return;
     }
 
-    // Inicializa o botão de download como oculto
+    if (!selectedFormat) {
+        alert("Por favor, selecione um formato para conversão!");
+        return;
+    }
+
+    // Oculta o botão de download
     downloadLink.classList.add('d-none');
-    
+
     const file = fileInput.files[0];
     const reader = new FileReader();
 
@@ -24,46 +42,51 @@ function convertImage() {
             canvas.height = img.height;
             ctx.drawImage(img, 0, 0);
 
-            // Começar o processo de conversão
-            const selectedFormat = formatSelect.value;
-            let dataUrl;
-
             // Simula o progresso da conversão
             let progress = 0;
             progressBar.value = progress;
 
             const interval = setInterval(() => {
-                progress += 10; // Aumenta o progresso a cada intervalo
-                progressBar.value = progress; // Atualiza a barra de progresso
+                progress += 10;
+                progressBar.value = progress;
 
-                // Quando o progresso atingir 100%, faz a conversão e mostra o botão de download
                 if (progress >= 100) {
-                    clearInterval(interval); // Limpa o intervalo quando chegar a 100%
-                    
-                    // Realiza a conversão para o formato desejado
-                    if (selectedFormat === 'png') {
-                        dataUrl = canvas.toDataURL('image/png');
-                    } else if (selectedFormat === 'jpeg') {
-                        dataUrl = canvas.toDataURL('image/jpeg');
-                    } else if (selectedFormat === 'bmp') {
-                        dataUrl = canvas.toDataURL('image/bmp');
-                    } else if (selectedFormat === 'gif') {
-                        dataUrl = canvas.toDataURL('image/gif');
-                    } else if (selectedFormat === 'webp') {
-                        dataUrl = canvas.toDataURL('image/webp');
-                    } else if (selectedFormat === 'avif') {
-                        dataUrl = canvas.toDataURL('image/avif');
-                    } else if (selectedFormat === 'heif') {
-                        dataUrl = canvas.toDataURL('image/heif');
+                    clearInterval(interval); // Para o progresso ao chegar em 100%
+
+                    let dataUrl = '';
+
+                    // Verifica o formato escolhido
+                    switch (selectedFormat) {
+                        case 'png':
+                            dataUrl = canvas.toDataURL('image/png');
+                            break;
+                        case 'jpeg':
+                            dataUrl = canvas.toDataURL('image/jpeg');
+                            break;
+                        case 'webp':
+                            dataUrl = canvas.toDataURL('image/webp');
+                            break;
+                        case 'gif':
+                        case 'bmp':
+                        case 'ico':
+                        case 'heif':
+                        case 'heic':
+                        case 'avif':
+                        case 'pdf':
+                        case 'eps':
+                            alert(`Conversão para ${selectedFormat.toUpperCase()} ainda não está disponível no navegador.`);
+                            return;
+                        default:
+                            alert("Formato inválido!");
+                            return;
                     }
-                    // Adicionar mais condições para outros formatos, como SVG, ICO, HEIC, PDF, EPS, etc.
-                    
-                    // Atualiza o link para download
+
+                    // Atualiza o botão de download
                     downloadLink.href = dataUrl;
                     downloadLink.download = `imagem-convertida.${selectedFormat}`;
                     downloadLink.classList.remove('d-none'); // Mostra o botão de download
                 }
-            }, 500); // Intervalo de 500ms (ajustável para simular o progresso)
+            }, 500); // Intervalo de 500ms
         };
 
         img.src = event.target.result;
