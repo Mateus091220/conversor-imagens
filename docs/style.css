@@ -1,67 +1,116 @@
+/* Corpo e fundo */
 body {
-    font-family: Arial, sans-serif;
+    background-color: #f4f4f4; /* Fundo neutro */
+    font-family: 'Roboto', sans-serif;
+    color: #333; /* Texto escuro para boa legibilidade */
+    margin: 0;
+    padding: 0;
     text-align: center;
-    background-color: #f4f4f4;
 }
 
-.container {
-    margin: 20px auto; /* Diminui a margem superior */
-    max-width: 800px; /* Aumenta a largura do container */
-    width: 100%;
+/* Cabeçalho */
+header {
+    background-color: #fff;
     padding: 20px;
-    background: white;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
-input, select, button {
-    margin-top: 10px;
+/* Logo */
+header img {
+    max-width: 150px;
+    margin-bottom: 20px;
+}
+
+/* Container principal */
+.container {
+    margin: 20px auto;
+    max-width: 800px;
+    padding: 30px;
+    background-color: #fff; /* Fundo branco para destacar conteúdo */
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Títulos */
+h2 {
+    font-weight: 700;
+    font-size: 1.8rem;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+/* Botões */
+button, .btn-outline-primary {
     padding: 10px;
     width: 100%;
-    border: none;
     border-radius: 5px;
+    border: none;
+    cursor: pointer;
 }
 
 button {
     background-color: #007bff;
     color: white;
-    cursor: pointer;
 }
 
 button:hover {
-    background-color: #0056b3;
+    background-color: #000000;
 }
 
 #download {
     display: inline-block;
     margin-top: 10px;
     padding: 10px 20px;
-    text-decoration: none;
     background-color: #28a745;
     color: white;
     border-radius: 5px;
+    text-decoration: none;
 }
 
 #download:hover {
     background-color: #1e7e34;
 }
 
-.hidden {
-    display: none;
+/* Formulários */
+input[type="file"], select {
+    margin-top: 10px;
+    padding: 10px;
+    width: 100%;
+    border: 1px solid #ddd;
+    border-radius: 5px;
 }
 
-/* Reduzindo o espaçamento entre o título e o formulário */
-h2 {
-    margin-bottom: 20px; /* Ajusta a margem inferior para um valor menor */
+/* Progresso */
+progress {
+    border-radius: 5px;
+    height: 20px;
+    width: 100%;
+    background-color: #f0f0f0;
 }
 
-/* Ajusta o espaçamento entre as seções */
-.card {
-    margin-bottom: 15px; /* Diminui o espaço entre os cards */
+progress[value] {
+    color: #4caf50; /* Cor verde quando progresso é visível */
 }
 
-/* Ajustando o espaçamento do cabeçalho */
-header img {
-    max-width: 200px;
-    margin-bottom: 20px; /* Ajusta o espaçamento abaixo do logo */
+/* Links */
+a {
+    text-decoration: none;
+    color: #28a745; /* Verde para destaque */
+}
+
+a:hover {
+    color: #218838;
+}
+
+/* Footer */
+footer {
+    margin-top: 30px;
+    padding: 20px;
+    background-color: #fff;
+    text-align: center;
+    border-top: 1px solid #ddd;
+}
+
+footer .adsbygoogle {
+    margin-top: 10px;
 }
