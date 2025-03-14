@@ -2,9 +2,10 @@
 <html lang="pt">
 
 <head>
+    <script src="https://cdn.jsdelivr.net/npm/@ffmpeg/ffmpeg@0.11.6"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Conversor de Imagens</title>
+    <title>Conversor de Arquivos</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
@@ -13,21 +14,18 @@
 
 <body>
     <header class="text-center mt-4 mb-3">
-        <!-- Logo do site -->
         <img src="logo.png" alt="Logo" class="img-fluid" style="max-width: 200px;">
     </header>
 
     <div class="container mt-3">
-        <h2 class="text-center mb-3">Conversor de Imagens</h2> <!-- Mantendo um pequeno espaço abaixo do título -->
+        <h2 class="text-center mb-3">Conversor de Imagens</h2>
 
         <form>
-            <!-- Box de seleção de arquivo -->
             <div class="card p-4 shadow-lg">
                 <h3>Escolha uma imagem</h3>
                 <input type="file" class="form-control mb-3" id="upload" accept="image/*">
             </div>
 
-            <!-- Opções de formato FORA do box -->
             <h3>Converter para:</h3>
             <div class="btn-group d-flex flex-wrap" id="format-buttons">
                 <button type="button" class="btn btn-outline-primary m-1" onclick="setFormat(event, 'png')">PNG</button>
@@ -35,34 +33,48 @@
                 <button type="button" class="btn btn-outline-primary m-1" onclick="setFormat(event, 'bmp')">BMP</button>
                 <button type="button" class="btn btn-outline-primary m-1" onclick="setFormat(event, 'gif')">GIF</button>
                 <button type="button" class="btn btn-outline-primary m-1" onclick="setFormat(event, 'webp')">WebP</button>
-                <button type="button" class="btn btn-outline-primary m-1" onclick="setFormat(event, 'svg')">SVG</button>
-                <button type="button" class="btn btn-outline-primary m-1" onclick="setFormat(event, 'ico')">ICO</button>
-                <button type="button" class="btn btn-outline-primary m-1" onclick="setFormat(event, 'heif')">HEIF</button>
-                <button type="button" class="btn btn-outline-primary m-1" onclick="setFormat(event, 'heic')">HEIC</button>
-                <button type="button" class="btn btn-outline-primary m-1" onclick="setFormat(event, 'avif')">AVIF</button>
-                <button type="button" class="btn btn-outline-primary m-1" onclick="setFormat(event, 'pdf')">PDF</button>
-                <button type="button" class="btn btn-outline-primary m-1" onclick="setFormat(event, 'eps')">EPS</button>
             </div>
 
-            <button type="button" class="btn btn-primary w-100" onclick="convertImage()">Converter</button>
+            <button type="button" class="btn btn-primary w-100 mt-3" onclick="convertImage()">Converter Imagem</button>
 
             <div class="mb-3 mt-3">
                 <label for="progress" class="form-label">Progresso</label>
                 <progress id="progress" value="0" max="100" class="w-100"></progress>
             </div>
+
+            <a id="download" class="btn btn-success mt-3 d-none" download>Baixar Imagem</a>
         </form>
 
-        <br>
-        <canvas id="canvas" class="d-none"></canvas>
-        <a id="download" class="btn btn-success mt-3 d-none" download>Baixar Imagem</a>
+        <hr>
+
+        <h2 class="text-center mb-3">Conversor de Vídeos</h2>
+
+        <form>
+            <div class="card p-4 shadow-lg">
+                <h3>Escolha um vídeo</h3>
+                <input type="file" id="videoUpload" class="form-control mb-3" accept="video/*">
+            </div>
+
+            <h3>Converter para:</h3>
+            <div class="btn-group d-flex flex-wrap">
+                <button type="button" class="btn btn-outline-primary m-1" onclick="convertVideo('mp4')">MP4</button>
+                <button type="button" class="btn btn-outline-primary m-1" onclick="convertVideo('avi')">AVI</button>
+                <button type="button" class="btn btn-outline-primary m-1" onclick="convertVideo('mkv')">MKV</button>
+            </div>
+
+            <div class="mb-3 mt-3">
+                <label for="progressBar" class="form-label">Progresso</label>
+                <progress id="progressBar" value="0" max="100" class="w-100"></progress>
+            </div>
+
+            <a id="downloadLink" class="btn btn-success mt-3 d-none">Baixar Vídeo</a>
+        </form>
+
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="script.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/avif.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/heif.js"></script>
 
-    <!-- Colocando o código do Google AdSense no final -->
     <footer class="text-center mt-5">
         <ins class="adsbygoogle"
             style="display:block"

@@ -1,4 +1,55 @@
 let selectedFormat = ''; // Variável global para armazenar o formato escolhido
+let ffmpegInstance = null; // Armazena a instância do FFmpeg para evitar múltiplos carregamentos
+
+async function loadFFmpeg() {
+    if (!ffmpegInstance) {
+        const { createFFmpeg } = FFmpeg;
+        ffmpegInstance = createFFmpeg({ log: true });
+        await ffmpegInstance.load();
+    }
+}
+
+async function convertVideo(format) {
+    const { fetchFile } = FFmpeg;
+    const ffmpeg = ffmpegInstance;
+
+    const fileInput = document.getElementById('videoUpload');
+    const progressBar = document.getElementById('progressBar');
+    const downloadLink = document.getElementById('downloadLink');
+
+    if (!fileInput.files.length) {
+        alert("Escolha um vídeo!");
+        return;
+    }
+
+    await loadFFmpeg(); // Garante que o FFmpeg esteja carregado
+
+    const file = fileInput.files[0];
+    const fileName = file.name.split('.').slice(0, -1).join('.');
+    const outputFileName = `${fileName}.${format}`;
+
+    try {
+        ffmpeg.FS('writeFile', file.name, await fetchFile(file));
+
+        ffmpeg.setProgress(({ ratio }) => {
+            progressBar.value = Math.round(ratio * 100);
+        });
+
+        await ffmpeg.run('-i', file.name, outputFileName);
+
+        const data = ffmpeg.FS('readFile', outputFileName);
+        const videoBlob = new Blob([data.buffer], { type: `video/${format}` });
+        const videoUrl = URL.createObjectURL(videoBlob);
+
+        downloadLink.href = videoUrl;
+        downloadLink.download = outputFileName;
+        downloadLink.classList.remove('d-none');
+
+    } catch (error) {
+        alert("Erro ao converter o vídeo. Tente novamente.");
+        console.error("Erro ao converter:", error);
+    }
+}
 
 function setFormat(event, format) {
     selectedFormat = format; // Define o formato selecionado
@@ -66,18 +117,8 @@ function convertImage() {
                         case 'webp':
                             dataUrl = canvas.toDataURL('image/webp');
                             break;
-                        case 'gif':
-                        case 'bmp':
-                        case 'ico':
-                        case 'heif':
-                        case 'heic':
-                        case 'avif':
-                        case 'pdf':
-                        case 'eps':
-                            alert(`Conversão para ${selectedFormat.toUpperCase()} ainda não está disponível no navegador.`);
-                            return;
                         default:
-                            alert("Formato inválido!");
+                            alert(`Conversão para ${selectedFormat.toUpperCase()} ainda não está disponível no navegador.`);
                             return;
                     }
 
